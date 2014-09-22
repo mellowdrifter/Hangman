@@ -94,7 +94,7 @@ def playGame():
     global guess_number
     chosen_word="testing"
     len_word=str(len(chosen_word))
-    showBoard()
+    showBoard(None)
     print col.bold+col.yellow+"""
     This word has """+len_word+""" letters in it
     """+col.end
@@ -103,14 +103,18 @@ def playGame():
         if not letter_choice:
             letter_choice=choiceLetter()
         if letter_choice in chosen_word:
-            showBoard()
+            showBoard("c")
         else:
             print "Incorrect!"
             guess_number+=1
-            showBoard()
+            showBoard("i")
 
-def showBoard():
+def showBoard(x):
     clearScreen()
+    if x == "c":
+        print col.bold+col.yellow+"    Correct!"+col.end
+    elif x == "i":
+        print col.bold+col.red+"    Incorrect!"+col.end
     print col.bold+col.yellow+"    This is your current standing:\n\n"+col.red+col.bold+hangman[guess_number]+col.end
     if guess_number<1:
         print col.yellow+col.bold+"\n    No letters have been chosen"+col.end

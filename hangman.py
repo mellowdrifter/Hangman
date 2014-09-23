@@ -13,11 +13,15 @@ class colours:
         self.end = "\033[0m"
 col = colours()
 
-global guess_number
-global guess_letters
+global number_of_guesses
+global already_chosen_letters
+global correct_letters
+global incorrect_letters
 
-guess_number=0
-guess_letters=[]
+number_of_guesses=0
+already_chosen_letters=[]
+correct_letters=[]
+incorrect_letters=[]
 
 hangman = ['''
      +---+
@@ -79,7 +83,12 @@ def clearScreen():
 def welcome():
     clearScreen()
     print col.bold+col.yellow+"""
-    Welcome to Hangman. These are your options:
+      _____ _____ _____ _____ _____ _____ _____
+     |  |  |  _  |   | |   __|     |  _  |   | |
+     |     |     | | | |  |  | | | |     | | | |
+     |__|__|__|__|_|___|_____|_|_|_|__|__|_|___|
+
+    These are your options:
 
     1) Play a new game
     2) Check high scores
@@ -91,39 +100,53 @@ def welcome():
     return gameChoice
 
 def playGame():
-    global guess_number
+    global number_of_guesses
     chosen_word="testing"
     len_word=str(len(chosen_word))
-    showBoard(None)
+    showBoard(0)
     print col.bold+col.yellow+"""
     This word has """+len_word+""" letters in it
     """+col.end
-    while guess_number<6:
+    while number_of_guesses<6:
         letter_choice=choiceLetter()
         if not letter_choice:
             letter_choice=choiceLetter()
+        already_chosen_letters.append(letter_choice)
         if letter_choice in chosen_word:
+            correct_letters.append(letter_choice)
             showBoard("c")
         else:
+            incorrect_letters.append(letter_choice)
             print "Incorrect!"
-            guess_number+=1
+            number_of_guesses+=1
             showBoard("i")
 
 def showBoard(x):
     clearScreen()
+    print col.bold+col.yellow+"    This is your current standing:\n"+col.red+col.bold+hangman[number_of_guesses]+col.end
     if x == "c":
-        print col.bold+col.yellow+"    Correct!"+col.end
+        print col.bold+col.yellow+"\n    Correct!"+col.end
     elif x == "i":
-        print col.bold+col.red+"    Incorrect!"+col.end
-    print col.bold+col.yellow+"    This is your current standing:\n\n"+col.red+col.bold+hangman[guess_number]+col.end
-    if guess_number<1:
+        print col.bold+col.red+"\n    Incorrect!"+col.end
+    showRight()
+    if number_of_guesses<1:
         print col.yellow+col.bold+"\n    No letters have been chosen"+col.end
-    elif guess_number<6:
-        print col.yellow+col.bold+"\n    These letters have already been incorrectly chosen: "+col.end
+    elif number_of_guesses<6:
+        showWrong()
     else:
-        print col.red+"\nGAME OVER - You lose!"+col.end
+        print col.red+"\n\n    GAME OVER - You lose!"+col.end
         raw_input("\nPress the enter key to go back to the title screen\n")
         titleScreen()
+
+def showWrong():
+    print col.yellow+col.bold+"\n    These letters have already been incorrectly chosen: "+col.end,
+    for i in incorrect_letters:
+        print col.yellow+col.bold+i+col.end,
+
+def showRight():
+    print col.bold+col.yellow+"\n    Current word: "+col.end,
+    for c in correct_letters:
+        print col.yellow+col.bold+c+col.end,
 
 def choiceLetter():
     print "\n"
@@ -131,9 +154,11 @@ def choiceLetter():
     if not choice.isalpha() or len(choice)>1:
         print "Invalid choice!"
         return None
+    elif choice.lower() in already_chosen_letters:
+        print "You already gave that letter!"
     else:
-        choice=choice.lower()
-        return choice
+        already_chosen_letters.append
+        return choice.lower()
 
 def chooseWord():
 #Read words text file and choose a word at random from there. Return the word
@@ -150,9 +175,7 @@ def scoreGame():
     return None
 
 def titleScreen():
-    global guess_number
-    guess_number=0
-    guess_letters=[]
+    already_chosen_letters=[]
     user_choice=welcome()
     while not user_choice:
         user_choice=welcome()

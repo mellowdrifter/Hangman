@@ -17,11 +17,15 @@ global number_of_guesses
 global already_chosen_letters
 global correct_letters
 global incorrect_letters
+global chosen_word
+global hidden_word
 
 number_of_guesses=0
 already_chosen_letters=[]
 correct_letters=[]
 incorrect_letters=[]
+chosen_word="testing"
+hidden_word=[]
 
 hangman = ['''
      +---+
@@ -101,7 +105,6 @@ def welcome():
 
 def playGame():
     global number_of_guesses
-    chosen_word="testing"
     len_word=str(len(chosen_word))
     showBoard(0)
     print col.bold+col.yellow+"""
@@ -145,8 +148,12 @@ def showWrong():
 
 def showRight():
     print col.bold+col.yellow+"\n    Current word: "+col.end,
+    print chosen_word
     for c in correct_letters:
-        print col.yellow+col.bold+c+col.end,
+        for i in chosen_word:
+            if c in i:
+                hidden_word.append[c]
+    print hidden_word
 
 def choiceLetter():
     print "\n"
@@ -162,17 +169,17 @@ def choiceLetter():
 
 def chooseWord():
 #Read words text file and choose a word at random from there. Return the word
-    return None
+    pass
 
 def showScores():
 #Read the database and show scores here. Has to be ordered by score. Would be nice to have date as well
     titleScreen()
-    return None
+
 
 def scoreGame():
 #Check to see if user can go onto leader list. If top score, make them feel special.
 #If user can go onto list, take their name and then display the leaderboard
-    return None
+    pass
 
 def titleScreen():
     already_chosen_letters=[]

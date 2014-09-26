@@ -37,42 +37,42 @@ hangman = ['''
     =========''', '''
      +---+
      |   |
-     o   |
+     O   |
          |
          |
          |
     =========''', '''
      +---+
      |   |
-     o   |
+     O   |
      |   |
          |
          |
     =========''', '''
      +---+
      |   |
-     o   |
+     O   |
     /|   |
          |
          |
     =========''', '''
      +---+
      |   |
-     o   |
+     O   |
     /|\  |
          |
          |
     =========''', '''
      +---+
      |   |
-     o   |
+     O   |
     /|\  |
     /    |
          |
     =========''', '''
      +---+
      |   |
-     o   |
+     O   |
     /|\  |
     / \  |
          |
@@ -148,12 +148,20 @@ def showWrong():
 
 def showRight():
     print col.bold+col.yellow+"\n    Current word: "+col.end,
-    print chosen_word
-    for c in correct_letters:
-        for i in chosen_word:
-            if c in i:
-                hidden_word.append[c]
-    print hidden_word
+    blanks="_"*len(chosen_word)
+    for i in range(len(chosen_word)):
+        if chosen_word[i] in correct_letters:
+            blanks=blanks[:i]+chosen_word[i]+blanks[i+1:]
+    for letter in blanks:
+        print letter,
+    if blanks==chosen_word:
+        winGame()
+
+def winGame():
+    clearScreen()
+    print "Congratulations, you've got the word!"
+    raw_input("Press enter to continue...")
+    titleScreen()
 
 def choiceLetter():
     print "\n"

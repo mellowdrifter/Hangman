@@ -13,14 +13,6 @@ class colours:
         self.end = "\033[0m"
 col = colours()
 
-global number_of_guesses
-global already_chosen_letters
-global correct_letters
-global incorrect_letters
-global chosen_word
-global hidden_word
-global blanks
-
 number_of_guesses=0
 already_chosen_letters=[]
 correct_letters=[]
@@ -107,12 +99,16 @@ def welcome():
 
 def playGame():
     global number_of_guesses
+    global win
     len_word=str(len(chosen_word))
     showBoard(0)
     print col.bold+col.yellow+"""
     This word has """+len_word+""" letters in it
     """+col.end
     while number_of_guesses<6:
+        print win
+        if win == 1:
+            winGame()
         letter_choice=choiceLetter()
         if not letter_choice:
             letter_choice=choiceLetter()
@@ -125,18 +121,17 @@ def playGame():
             print "Incorrect!"
             number_of_guesses+=1
             showBoard("i")
-    winGame()
 
 def showBoard(x):
     clearScreen()
     print col.bold+col.yellow+"    This is your current standing:\n"+col.red+col.bold+hangman[number_of_guesses]+col.end
+    test = showRight()
+    if test == 1:
+        winGame()
     if x == "c":
         print col.bold+col.yellow+"\n    Correct!"+col.end
     elif x == "i":
         print col.bold+col.red+"\n    Incorrect!"+col.end
-    win=showRight()
-    if win == chosen_word:
-        break
     if number_of_guesses<1:
         print col.yellow+col.bold+"\n    No letters have been chosen"+col.end
     elif number_of_guesses<6:
@@ -194,9 +189,11 @@ def scoreGame():
     pass
 
 def titleScreen():
+    global win
     already_chosen_letters=[]
     blanks=""
     user_choice=welcome()
+    win = 0
     while not user_choice:
         user_choice=welcome()
     if user_choice=="1":

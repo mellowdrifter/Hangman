@@ -19,6 +19,7 @@ global correct_letters
 global incorrect_letters
 global chosen_word
 global hidden_word
+global blanks
 
 number_of_guesses=0
 already_chosen_letters=[]
@@ -26,6 +27,7 @@ correct_letters=[]
 incorrect_letters=[]
 chosen_word="testing"
 hidden_word=[]
+blanks=""
 
 hangman = ['''
      +---+
@@ -123,6 +125,7 @@ def playGame():
             print "Incorrect!"
             number_of_guesses+=1
             showBoard("i")
+    winGame()
 
 def showBoard(x):
     clearScreen()
@@ -131,7 +134,9 @@ def showBoard(x):
         print col.bold+col.yellow+"\n    Correct!"+col.end
     elif x == "i":
         print col.bold+col.red+"\n    Incorrect!"+col.end
-    showRight()
+    win=showRight()
+    if win == chosen_word:
+        break
     if number_of_guesses<1:
         print col.yellow+col.bold+"\n    No letters have been chosen"+col.end
     elif number_of_guesses<6:
@@ -154,8 +159,7 @@ def showRight():
             blanks=blanks[:i]+chosen_word[i]+blanks[i+1:]
     for letter in blanks:
         print letter,
-    if blanks==chosen_word:
-        winGame()
+    return blanks
 
 def winGame():
     clearScreen()
@@ -191,6 +195,7 @@ def scoreGame():
 
 def titleScreen():
     already_chosen_letters=[]
+    blanks=""
     user_choice=welcome()
     while not user_choice:
         user_choice=welcome()

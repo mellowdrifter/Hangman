@@ -113,7 +113,9 @@ def playGame():
         if not letter_choice:
             letter_choice=choiceLetter()
         already_chosen_letters.append(letter_choice)
-        if letter_choice in chosen_word:
+        if not letter_choice:
+            pass
+        elif letter_choice in chosen_word:
             correct_letters.append(letter_choice)
             showBoard("c")
         else:
@@ -179,7 +181,8 @@ def chooseWord():
 #Read words text file and choose a word at random from there. Return the word.
 #In interim use the word testing
     global chosen_word
-    chosen_word="hangman"
+    word="Hangman"
+    chosen_word=word.lower()
     return chosen_word
 
 

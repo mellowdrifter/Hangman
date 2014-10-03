@@ -17,7 +17,6 @@ number_of_guesses=0
 already_chosen_letters=[]
 correct_letters=[]
 incorrect_letters=[]
-chosen_word="testing"
 hidden_word=[]
 blanks=""
 
@@ -100,6 +99,7 @@ def welcome():
 def playGame():
     global number_of_guesses
     global win
+    global chosen_word
     len_word=str(len(chosen_word))
     showBoard(0)
     print col.bold+col.yellow+"""
@@ -147,6 +147,7 @@ def showWrong():
         print col.yellow+col.bold+i+col.end,
 
 def showRight():
+    global chosen_word
     print col.bold+col.yellow+"\n    Current word: "+col.end,
     blanks="_"*len(chosen_word)
     for i in range(len(chosen_word)):
@@ -175,8 +176,12 @@ def choiceLetter():
         return choice.lower()
 
 def chooseWord():
-#Read words text file and choose a word at random from there. Return the word
-    pass
+#Read words text file and choose a word at random from there. Return the word.
+#In interim use the word testing
+    global chosen_word
+    chosen_word="hangman"
+    return chosen_word
+
 
 def showScores():
 #Read the database and show scores here. Has to be ordered by score. Would be nice to have date as well
@@ -190,6 +195,7 @@ def scoreGame():
 
 def titleScreen():
     global win
+    chooseWord()
     already_chosen_letters=[]
     blanks=""
     user_choice=welcome()

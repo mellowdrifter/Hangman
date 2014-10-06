@@ -99,14 +99,13 @@ def welcome():
 def playGame():
     global number_of_guesses
     global win
-    global chosen_word
     len_word=str(len(chosen_word))
     showBoard(0)
     print col.bold+col.yellow+"""
     This word has """+len_word+""" letters in it
     """+col.end
     while number_of_guesses<6:
-        print win
+        print "\nWin  is now",win
         if win == 1:
             winGame()
         letter_choice=choiceLetter()
@@ -126,10 +125,11 @@ def playGame():
 
 def showBoard(x):
     clearScreen()
+    global win
     print col.bold+col.yellow+"    This is your current standing:\n"+col.red+col.bold+hangman[number_of_guesses]+col.end
     test = showRight()
     if test == 1:
-        winGame()
+        win = 1
     if x == "c":
         print col.bold+col.yellow+"\n    Correct!"+col.end
     elif x == "i":
@@ -148,13 +148,12 @@ def showWrong():
     for i in incorrect_letters:
         print col.yellow+col.bold+i+col.end,
 
-def showRight():
-    global chosen_word
+def showRight(word):
     print col.bold+col.yellow+"\n    Current word: "+col.end,
-    blanks="_"*len(chosen_word)
-    for i in range(len(chosen_word)):
-        if chosen_word[i] in correct_letters:
-            blanks=blanks[:i]+chosen_word[i]+blanks[i+1:]
+    blanks="_"*len(word)
+    for i in range(len(word)):
+        if word[i] in correct_letters:
+            blanks=blanks[:i]+word[i]+blanks[i+1:]
     for letter in blanks:
         print letter,
     return blanks
@@ -180,10 +179,9 @@ def choiceLetter():
 def chooseWord():
 #Read words text file and choose a word at random from there. Return the word.
 #In interim use the word testing
-    global chosen_word
     word="Hangman"
-    chosen_word=word.lower()
-    return chosen_word
+    word=word.lower()
+    return word
 
 
 def showScores():
@@ -198,7 +196,7 @@ def scoreGame():
 
 def titleScreen():
     global win
-    chooseWord()
+    chosen_word = chooseWord()
     already_chosen_letters=[]
     blanks=""
     user_choice=welcome()
